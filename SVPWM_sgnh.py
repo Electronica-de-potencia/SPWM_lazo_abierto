@@ -2,7 +2,7 @@ import math as ma
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-import RPi.GPIO as GPIO 
+#import RPi.GPIO as GPIO 
 import time
 
 def tiempos(alpha,r,n):
@@ -76,9 +76,9 @@ def secuencia_s6 (n):
     return sa,sb,sc
 
 def secuencia_total(n):
-    sa = "a"
-    sb = "b"
-    sc = "c"
+    sa = "0"
+    sb = "0"
+    sc = "0"
     
     #Agregar los bits del sector 1
     a_aux,b_aux,c_aux = secuencia_s1(n)
@@ -115,7 +115,7 @@ def secuencia_total(n):
 
 def datos (n):
     angulos = np.arange(0, 360, 360/(6*n))
-    t = np.array(["t(ms)"]) 
+    t = np.array([0]) 
     r=1
     for i in angulos:
         row =tiempos(i,r,n)
@@ -157,7 +157,14 @@ data.shape
 PinA = 3
 PinB = 5
 PinC = 7
-GPI0.setup(pinA,GPIO.OUT)
-GPI0.setup(pinB,GPIO.OUT)
-GPI0.setup(pinC,GPIO.OUT)
-print(SalidaRasperry(data))  
+while True:
+    #GPI0.setup(pinA,GPIO.OUT)
+    #GPI0.setup(pinB,GPIO.OUT)
+    #GPI0.setup(pinC,GPIO.OUT)
+    #print(SalidaRasperry(data)) 
+    print(data)
+
+
+
+
+ 
