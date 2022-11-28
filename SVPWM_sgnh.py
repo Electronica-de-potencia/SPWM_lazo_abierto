@@ -137,7 +137,7 @@ def typhoon(data):
     for i in range(0,sh[0]-1):
         f = data[1+i]
         t = f[3]
-        p = round(float(t)*(100)/(16.6666666666666666))
+        p = round(float(t)*(1000)/(16.666666666666666))
         for i in range(p):
             A.append(f[0])
             B.append(f[1])
