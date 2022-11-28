@@ -128,7 +128,7 @@ def datos (n):
     dat = np.append(dat, t, axis = 1)
     return dat
 
-def typhoon(data):
+def typhoon(data,n):
     sh = data.shape
     s = 0
     A = []
@@ -147,17 +147,20 @@ def typhoon(data):
 def SalidaRasperry(data):
     d = np.shape(data)
     Nfilas = d[0]
-    for i in range(1,Nfilas):
-        DatoA = data[i][0]
-        DatoB = data[i][1]
-        DatoC = data[i][2]
-        TimeOn = data[i][3]
-        if  TimeOn >0:
-            GPIO.output(PinA,DatoA)
-            GPIO.output(PinB,DatoB)
-            GPIO.output(PinC,DatoC)
-            time.sleep(TimeOn)
-  
+    k = 0
+    while k  < 500:
+        for i in range(1,Nfilas):
+            DatoA = data[i][0]
+            DatoB = data[i][1]
+            DatoC = data[i][2]
+            TimeOn = data[i][3]
+            if  TimeOn >0:
+                GPIO.output(PinA,DatoA)
+                GPIO.output(PinB,DatoB)
+                GPIO.output(PinC,DatoC)
+                time.sleep(TimeOn)
+        k += 1
+    
 
 
 ############################################################################################### 
@@ -169,19 +172,12 @@ data = datos(n)
 data.shape
 #df_dir1 = pd.DataFrame(data)
 #display (df_dir1)
-PinA = 3
-PinB = 5
-PinC = 7
+PinA = 11
+PinB = 13
+PinC = 15
 data = datos(n)
-A,B,C = typhoon(data)
-while True:
-    A,B,C = typhoon(data)
-    #GPI0.setup(pinA,GPIO.OUT)
-    #GPI0.setup(pinB,GPIO.OUT)
-    #GPI0.setup(pinC,GPIO.OUT)
-    #print(SalidaRasperry(data)) 
-    
-
+#A,B,C = typhoon(data,n)
+SalidaRasperry(data)
 
 
 
