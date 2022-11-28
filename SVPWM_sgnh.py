@@ -128,6 +128,21 @@ def datos (n):
     dat = np.append(dat, t, axis = 1)
     return dat
 
+def typhoon(data):
+    sh = data.shape
+    s = 0
+    A = []
+    B = []
+    C = []
+    for i in range(0,sh[0]-1):
+        f = data[1+i]
+        t = f[3]
+        p = round(float(t)*(100)/(16.6666666666666666))
+        for i in range(p):
+            A.append(f[0])
+            B.append(f[1])
+            C.append(f[2])
+    return A,B,C
 
 def SalidaRasperry(data):
     d = np.shape(data)
@@ -157,12 +172,15 @@ data.shape
 PinA = 3
 PinB = 5
 PinC = 7
+data = datos(n)
+A,B,C = typhoon(data)
 while True:
+    A,B,C = typhoon(data)
     #GPI0.setup(pinA,GPIO.OUT)
     #GPI0.setup(pinB,GPIO.OUT)
     #GPI0.setup(pinC,GPIO.OUT)
     #print(SalidaRasperry(data)) 
-    print(data)
+    
 
 
 
