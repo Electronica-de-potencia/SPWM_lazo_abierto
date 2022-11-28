@@ -129,21 +129,6 @@ def datos (n):
     return dat
 
 
-
-############################################################################################### 
-n=1
-#Matriz de datos con:
-#Estado transistor a, Estado transistor b,Estado transistor c, tiempo que dura ese estado (ms)
-data = datos(n)
-data.shape
-df_dir1 = pd.DataFrame(data)
-display (df_dir1)
-PinA = 3
-PinB = 5
-PinC = 7
-GPI0.setup(pinA,GPIO.OUT)
-GPI0.setup(pinB,GPIO.OUT)
-GPI0.setup(pinC,GPIO.OUT)
 def SalidaRasperry(data):
     d = np.shape(data)
     Nfilas = d[0]
@@ -152,10 +137,27 @@ def SalidaRasperry(data):
         DatoB = data[i][1]
         DatoC = data[i][2]
         TimeOn = data[i][3]
-        GPIO.output(PinA,DatoA)
-        GPIO.output(PinB,DatoB)
-        GPIO.output(PinC,DatoC)
-        time.sleep(TimeOn)
-print(SalidaRasperry(data))    
+        if  TimeOn >0:
+            GPIO.output(PinA,DatoA)
+            GPIO.output(PinB,DatoB)
+            GPIO.output(PinC,DatoC)
+            time.sleep(TimeOn)
+  
 
 
+############################################################################################### 
+
+n=1
+#Matriz de datos con:
+#Estado transistor a, Estado transistor b,Estado transistor c, tiempo que dura ese estado (ms)
+data = datos(n)
+data.shape
+#df_dir1 = pd.DataFrame(data)
+#display (df_dir1)
+PinA = 3
+PinB = 5
+PinC = 7
+GPI0.setup(pinA,GPIO.OUT)
+GPI0.setup(pinB,GPIO.OUT)
+GPI0.setup(pinC,GPIO.OUT)
+print(SalidaRasperry(data))  
