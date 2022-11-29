@@ -1,8 +1,9 @@
 import math as ma
 import numpy as np
-import matplotlib.pyplot as plt
-import pandas as pd
-#import RPi.GPIO as GPIO 
+#import matplotlib.pyplot as plt
+#import pandas as pd
+import RPi.GPIO as GPIO 
+
 import time
 
 def tiempos(alpha,r,n):
@@ -148,24 +149,29 @@ def SalidaRasperry(data):
     d = np.shape(data)
     Nfilas = d[0]
     k = 0
-    while k  < 500:
-        for i in range(1,Nfilas):
-            DatoA = data[i][0]
-            DatoB = data[i][1]
-            DatoC = data[i][2]
-            TimeOn = data[i][3]
+ 
+    while k  < 5000:
+        for i in range(1,Nfilas-1):
+           
+            DatoA = int(data[i][0])
+            DatoB = int(data[i][1])
+            DatoC = int(data[i][2])
+            TimeOn = float (data[i][3])
+            
             if  TimeOn >0:
+                print (DatoA)
                 GPIO.output(PinA,DatoA)
                 GPIO.output(PinB,DatoB)
                 GPIO.output(PinC,DatoC)
-                time.sleep(TimeOn)
+                time.sleep(TimeOn/1000)
         k += 1
+     
     
 
 
 ############################################################################################### 
 
-n=1
+n=7
 #Matriz de datos con:
 #Estado transistor a, Estado transistor b,Estado transistor c, tiempo que dura ese estado (ms)
 data = datos(n)
@@ -175,6 +181,11 @@ data.shape
 PinA = 11
 PinB = 13
 PinC = 15
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(PinA,GPIO.OUT)
+GPIO.setup(PinB,GPIO.OUT)
+GPIO.setup(PinC,GPIO.OUT)
+
 data = datos(n)
 #A,B,C = typhoon(data,n)
 SalidaRasperry(data)
