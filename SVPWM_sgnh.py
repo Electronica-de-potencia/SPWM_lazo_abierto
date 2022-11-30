@@ -6,7 +6,7 @@ import RPi.GPIO as GPIO
 
 import time
 
-def tiempos(alpha,r,n):
+def tiempos(alpha,r,n,k):
     #alpha = angulo transitorio
     # r = factor de reducción del vector
     # n = cantidad vectores intermedios 
@@ -30,7 +30,7 @@ def tiempos(alpha,r,n):
     #print(f"betha = {np.degrees(betha) }")
 
     #Tiempos
-    Tz = (1/(60*n))*1000
+    Tz = (1/(60*n*k))*1000
     a = Vref/((ma.sqrt(2)/2))
     T1 = abs(Tz*round(a*(ma.sin(ma.radians(60) - betha) / ma.sin(ma.radians(60))),6)) 
     T2 = abs (Tz*round(a*(ma.sin(betha)/ma.sin(ma.radians(60))),6))
@@ -39,92 +39,116 @@ def tiempos(alpha,r,n):
     T =([T0/2,T1,T2,T0/2])
     return T
 
-def secuencia_s1 (n):
+def secuencia_s1 (n,k):
     #Secuencia de bits para canal a,b y c en el sector 1 (0-60)
-    sa ="0111"*n
-    sb ="0011"*n
-    sc ="0001"*n
+    sa ="0111"*n*k
+    sb ="0011"*n*k
+    sc ="0001"*n*k
     return sa,sb,sc
-def secuencia_s2 (n):
+def secuencia_s2 (n,k):
     #Secuencia de bits para canal a,b y c en el sector 1 (60-120)
-    sa ="1100"*n
-    sb ="1110"*n
-    sc ="1000"*n
+    sa ="1100"*n*k
+    sb ="1110"*n*k
+    sc ="1000"*n*k
     return sa,sb,sc
-def secuencia_s3 (n):
+def secuencia_s3 (n,k):
     #Secuencia de bits para canal a,b y c en el sector 1 (120-180)
-    sa ="0001"*n
-    sb ="0111"*n
-    sc ="0011"*n
+    sa ="0001"*n*k
+    sb ="0111"*n*k
+    sc ="0011"*n*k
     return sa,sb,sc
-def secuencia_s4 (n):
+def secuencia_s4 (n,k):
     #Secuencia de bits para canal a,b y c en el sector 1 (180-240)
-    sa ="1000"*n
-    sb ="1100"*n
-    sc ="1110"*n
+    sa ="1000"*n*k
+    sb ="1100"*n*k
+    sc ="1110"*n*k
     return sa,sb,sc
-def secuencia_s5 (n):
+def secuencia_s5 (n,k):
     #Secuencia de bits para canal a,b y c en el sector 1 (240-300)
-    sa ="0011"*n
-    sb ="0001"*n
-    sc ="0111"*n
+    sa ="0011"*n*k
+    sb ="0001"*n*k
+    sc ="0111"*n*k
     return sa,sb,sc
-def secuencia_s6 (n):
+def secuencia_s6 (n,k):
     #Secuencia de bits para canal a,b y c en el sector 1 (300-360)
-    sa ="1110"*n
-    sb ="1000"*n
-    sc ="1100"*n
+    sa ="1110"*n*k
+    sb ="1000"*n*k
+    sc ="1100"*n*k
     return sa,sb,sc
 
-def secuencia_total(n):
+def secuencia_total(n,k):
     sa = "0"
     sb = "0"
     sc = "0"
     
     #Agregar los bits del sector 1
-    a_aux,b_aux,c_aux = secuencia_s1(n)
+    a_aux,b_aux,c_aux = secuencia_s1(n,k)
     sa = sa+a_aux
     sb = sb+b_aux
     sc = sc+c_aux
     #Agregar los bits del sector 2
-    a_aux,b_aux,c_aux = secuencia_s2(n)
+    a_aux,b_aux,c_aux = secuencia_s2(n,k)
     sa = sa+a_aux
     sb = sb+b_aux
     sc = sc+c_aux
     #Agregar los bits del sector 3
-    a_aux,b_aux,c_aux = secuencia_s3(n)
+    a_aux,b_aux,c_aux = secuencia_s3(n,k)
     sa = sa+a_aux
     sb = sb+b_aux
     sc = sc+c_aux
     #Agregar los bits del sector 4
-    a_aux,b_aux,c_aux = secuencia_s4(n)
+    a_aux,b_aux,c_aux = secuencia_s4(n,k)
     sa = sa+a_aux
     sb = sb+b_aux
     sc = sc+c_aux
     #Agregar los bits del sector 5
-    a_aux,b_aux,c_aux = secuencia_s5(n)
+    a_aux,b_aux,c_aux = secuencia_s5(n,k)
     sa = sa+a_aux
     sb = sb+b_aux
     sc = sc+c_aux
     #Agregar los bits del sector 6
-    a_aux,b_aux,c_aux = secuencia_s6(n)
+    a_aux,b_aux,c_aux = secuencia_s6(n,k)
     sa = sa+a_aux
     sb = sb+b_aux
     sc = sc+c_aux
     return sa,sb,sc
 
 
-def datos (n):
+def datos (n,k):
     angulos = np.arange(0, 360, 360/(6*n))
     t = np.array([0]) 
     r=1
-    for i in angulos:
-        row =tiempos(i,r,n)
-        t = np.vstack([t,row[0]])
-        t = np.vstack([t,row[1]])
-        t = np.vstack([t,row[2]])
-        t = np.vstack([t,row[3]])
-    sa,sb,sc = secuencia_total(n)
+    if k == 2:
+
+        for i in angulos:
+            row =tiempos(i,r*0.5,n)
+            t = np.vstack([t,row[0]])
+            t = np.vstack([t,row[1]])
+            t = np.vstack([t,row[2]])
+            t = np.vstack([t,row[3]])
+            row =tiempos(i,r ,n)
+            t = np.vstack([t,row[4]])
+            t = np.vstack([t,row[5]])
+            t = np.vstack([t,row[6]])
+            t = np.vstack([t,row[7]])
+    elif k == 3:
+            row =tiempos(i,r*0.3,n)
+            t = np.vstack([t,row[0]])
+            t = np.vstack([t,row[1]])
+            t = np.vstack([t,row[2]])
+            t = np.vstack([t,row[3]])
+            row =tiempos(i,r*0.6,n)
+            t = np.vstack([t,row[4]])
+            t = np.vstack([t,row[5]])
+            t = np.vstack([t,row[6]])
+            t = np.vstack([t,row[7]])
+            row =tiempos(i,r ,n)
+            t = np.vstack([t,row[8]])
+            t = np.vstack([t,row[9]])
+            t = np.vstack([t,row[10]])
+            t = np.vstack([t,row[11]])
+        
+    sa,sb,sc = secuencia_total(n,k)
     dat = np.transpose(np.array([list(sa),list(sb),list(sc)]))
     dat = np.append(dat, t, axis = 1)
     return dat
@@ -171,10 +195,11 @@ def SalidaRasperry(data):
 
 ############################################################################################### 
 
-n=20
+n=7
+k = 2
 #Matriz de datos con:
 #Estado transistor a, Estado transistor b,Estado transistor c, tiempo que dura ese estado (ms)
-data = datos(n)
+data = datos(n,k)
 data.shape
 #df_dir1 = pd.DataFrame(data)
 #display (df_dir1)
@@ -186,7 +211,7 @@ GPIO.setup(PinA,GPIO.OUT)
 GPIO.setup(PinB,GPIO.OUT)
 GPIO.setup(PinC,GPIO.OUT)
 
-data = datos(n)
+data = datos(n,k)
 #A,B,C = typhoon(data,n)
 SalidaRasperry(data)
 
