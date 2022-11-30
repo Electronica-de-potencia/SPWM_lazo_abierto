@@ -53,13 +53,13 @@ def secuencia_s1 (n,k):
     sc ="0001"*n*k
     return sa,sb,sc
 def secuencia_s2 (n,k):
-    #Secuencia de bits para canal a,b y c en el sector 1 (60-120)
+    #Secuencia de bits para canal a,b y c en el sector 2 (60-120)
     sa ="1100"*n*k
     sb ="1110"*n*k
     sc ="1000"*n*k
     return sa,sb,sc
 def secuencia_s3 (n,k):
-    #Secuencia de bits para canal a,b y c en el sector 1 (120-180)
+    #Secuencia de bits para canal a,b y c en el sector 3 (120-180)
     sa ="0001"*n*k
     sb ="0111"*n*k
     sc ="0011"*n*k
@@ -204,7 +204,7 @@ def SalidaRasperry(data):
                 GPIO.output(PinA,DatoA)
                 GPIO.output(PinB,DatoB)
                 GPIO.output(PinC,DatoC)
-                time.sleep(TimeOn/1000000)
+                time.sleep(TimeOn/1000)
         k += 1
      
     
