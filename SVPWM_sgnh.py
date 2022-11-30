@@ -37,6 +37,7 @@ def tiempos(alpha,r,n,k):
 
     #Tiempos
     Tz = (1/(60*n*k))*1000
+    #print (f"Tz {Tz}")
     a = Vref/((ma.sqrt(2)/2))
     T1 = abs(Tz*round(a*(ma.sin(ma.radians(60) - betha) / ma.sin(ma.radians(60))),6)) 
     T2 = abs (Tz*round(a*(ma.sin(betha)/ma.sin(ma.radians(60))),6))
@@ -124,8 +125,18 @@ def datos (n,k):
     angulos = np.arange(0, 360, 360/(6*n))
     t = np.array([0]) 
     r=1
-    if int(k) == 2:
+    if int(k) == 1:
         for i in angulos:
+            #print(f"len angulos {len(angulos)}, i {i}")
+            row =tiempos(i,r ,n,k)
+            t = np.vstack([t,row[0]])
+            t = np.vstack([t,row[1]])
+            t = np.vstack([t,row[2]])
+            t = np.vstack([t,row[3]])
+    elif int(k) == 2:
+        for i in angulos:
+
+            #print(f"len angulos {len(angulos)}, i {i}")
             row =tiempos(i,r*0.5,n,k)
             t = np.vstack([t,row[0]])
             t = np.vstack([t,row[1]])
@@ -136,6 +147,7 @@ def datos (n,k):
             t = np.vstack([t,row[1]])
             t = np.vstack([t,row[2]])
             t = np.vstack([t,row[3]])
+    
     elif int(k) == 3:
             row =tiempos(i,r*0.3,n,k)
             t = np.vstack([t,row[0]])
@@ -167,7 +179,7 @@ def typhoon(data,n):
     for i in range(0,sh[0]-1):
         f = data[1+i]
         t = f[3]
-        p = round(float(t)*(1000000)/(16.666666666666666))
+        p = round(float(t)*(500)/(16.666666666666666))
         for i in range(p):
             A.append(f[0])
             B.append(f[1])
@@ -200,8 +212,8 @@ def SalidaRasperry(data):
 
 ############################################################################################### 
 
-n=7
-k = 2
+n=int (input("Digite la cantidad de vectores intermedios que desea ver: "))
+k = int(input("Digite la cantidad de multiniveles que desea ver: 1,2 o 3: "))
 #Matriz de datos con:
 #Estado transistor a, Estado transistor b,Estado transistor c, tiempo que dura ese estado (ms)
 data = datos(n,k)
@@ -216,7 +228,9 @@ PinC = 7
 # GPIO.setup(PinB,GPIO.OUT)
 # GPIO.setup(PinC,GPIO.OUT)
 
-data = datos(n,k)
+#data = datos(n,k)
 A,B,C = typhoon(data,n)
 #SalidaRasperry(data)
+print (len (A))
+print (data.shape)
 
