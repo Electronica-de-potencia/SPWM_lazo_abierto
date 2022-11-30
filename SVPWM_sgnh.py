@@ -138,7 +138,7 @@ def typhoon(data,n):
     for i in range(0,sh[0]-1):
         f = data[1+i]
         t = f[3]
-        p = round(float(t)*(1000)/(16.666666666666666))
+        p = round(float(t)*(1000000)/(16.666666666666666))
         for i in range(p):
             A.append(f[0])
             B.append(f[1])
@@ -163,7 +163,7 @@ def SalidaRasperry(data):
                 GPIO.output(PinA,DatoA)
                 GPIO.output(PinB,DatoB)
                 GPIO.output(PinC,DatoC)
-                time.sleep(TimeOn/1000)
+                time.sleep(TimeOn/1000000)
         k += 1
      
     
@@ -171,16 +171,16 @@ def SalidaRasperry(data):
 
 ############################################################################################### 
 
-n=7
+n=20
 #Matriz de datos con:
 #Estado transistor a, Estado transistor b,Estado transistor c, tiempo que dura ese estado (ms)
 data = datos(n)
 data.shape
 #df_dir1 = pd.DataFrame(data)
 #display (df_dir1)
-PinA = 11
-PinB = 13
-PinC = 15
+PinA = 3
+PinB = 5
+PinC = 7
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(PinA,GPIO.OUT)
 GPIO.setup(PinB,GPIO.OUT)
