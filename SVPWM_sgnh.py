@@ -1,10 +1,16 @@
+# Numpy module is imported as 'np'
+# Scipy module is imported as 'sp'
+# The Schematic API is imported as 'mdl'
+# To get the model file path, use 'mdl.get_model_file_path()'
+# To print information to the console, use info()
+
 import math as ma
 import numpy as np
 #import matplotlib.pyplot as plt
 #import pandas as pd
-import RPi.GPIO as GPIO 
+#import RPi.GPIO as GPIO 
 
-import time
+#import time
 
 def tiempos(alpha,r,n,k):
     #alpha = angulo transitorio
@@ -118,35 +124,34 @@ def datos (n,k):
     angulos = np.arange(0, 360, 360/(6*n))
     t = np.array([0]) 
     r=1
-    if k == 2:
-
+    if int(k) == 2:
         for i in angulos:
-            row =tiempos(i,r*0.5,n)
+            row =tiempos(i,r*0.5,n,k)
             t = np.vstack([t,row[0]])
             t = np.vstack([t,row[1]])
             t = np.vstack([t,row[2]])
             t = np.vstack([t,row[3]])
-            row =tiempos(i,r ,n)
-            t = np.vstack([t,row[4]])
-            t = np.vstack([t,row[5]])
-            t = np.vstack([t,row[6]])
-            t = np.vstack([t,row[7]])
-    elif k == 3:
-            row =tiempos(i,r*0.3,n)
+            row =tiempos(i,r ,n,k)
             t = np.vstack([t,row[0]])
             t = np.vstack([t,row[1]])
             t = np.vstack([t,row[2]])
             t = np.vstack([t,row[3]])
-            row =tiempos(i,r*0.6,n)
-            t = np.vstack([t,row[4]])
-            t = np.vstack([t,row[5]])
-            t = np.vstack([t,row[6]])
-            t = np.vstack([t,row[7]])
-            row =tiempos(i,r ,n)
-            t = np.vstack([t,row[8]])
-            t = np.vstack([t,row[9]])
-            t = np.vstack([t,row[10]])
-            t = np.vstack([t,row[11]])
+    elif int(k) == 3:
+            row =tiempos(i,r*0.3,n,k)
+            t = np.vstack([t,row[0]])
+            t = np.vstack([t,row[1]])
+            t = np.vstack([t,row[2]])
+            t = np.vstack([t,row[3]])
+            row =tiempos(i,r*0.6,n,k)
+            t = np.vstack([t,row[0]])
+            t = np.vstack([t,row[1]])
+            t = np.vstack([t,row[2]])
+            t = np.vstack([t,row[3]])
+            row =tiempos(i,r ,n,k)
+            t = np.vstack([t,row[0]])
+            t = np.vstack([t,row[1]])
+            t = np.vstack([t,row[2]])
+            t = np.vstack([t,row[3]])
         
     sa,sb,sc = secuencia_total(n,k)
     dat = np.transpose(np.array([list(sa),list(sb),list(sc)]))
@@ -206,15 +211,12 @@ data.shape
 PinA = 3
 PinB = 5
 PinC = 7
-GPIO.setmode(GPIO.BOARD)
-GPIO.setup(PinA,GPIO.OUT)
-GPIO.setup(PinB,GPIO.OUT)
-GPIO.setup(PinC,GPIO.OUT)
+# GPIO.setmode(GPIO.BOARD)
+# GPIO.setup(PinA,GPIO.OUT)
+# GPIO.setup(PinB,GPIO.OUT)
+# GPIO.setup(PinC,GPIO.OUT)
 
 data = datos(n,k)
-#A,B,C = typhoon(data,n)
-SalidaRasperry(data)
+A,B,C = typhoon(data,n)
+#SalidaRasperry(data)
 
-
-
- 
